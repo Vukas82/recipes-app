@@ -56,10 +56,16 @@ const createBtn = (page, type) => `
         </button>
 `;
 
+const noBtn = () => {
+    elements.noBtn.innerHTML = '';
+};
+
+
 const renderButtons = (page, numResult, resPerPage) => {
     const pages = Math.ceil(numResult / resPerPage);
 
     let button;
+
     if (page === 1 && pages > 1) {
         // show only btn for next pages
         button = createBtn(page, 'next');
@@ -73,6 +79,9 @@ const renderButtons = (page, numResult, resPerPage) => {
         // show only btn for prev pages
         button = createBtn(page, 'prev')
     }
+    // else {
+    //     noBtn();
+    // }
 
     elements.searchResPages.insertAdjacentHTML('afterbegin', button)
 };

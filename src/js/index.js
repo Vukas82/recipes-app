@@ -4,6 +4,7 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import {
     elements,
     renderLoader,
@@ -24,8 +25,7 @@ const state = {};
 */
 const controleSearch = async () => {
     //  1. get a query from view
-    // const query = searchView.getInput();
-    const query = 'pizza';
+    const query = searchView.getInput();
 
 
     if (query) {
@@ -56,14 +56,6 @@ elements.searchForm.addEventListener('submit', e => {
 });
 
 
-// ===========================================================================================
-// JUST FOR TESTING
-window.addEventListener('load', e => {
-    e.preventDefault();
-    controleSearch();
-});
-// ===========================================================================================
-
 
 elements.searchResPages.addEventListener('click', e => {
     const btn = e.target.closest('.btn-inline');
@@ -88,23 +80,23 @@ const controlRecipe = async () => {
     if (id) {
 
         // Prepare UI for changes
-
+        recipeView.clearRecipe();
+        renderLoader(elements.recipe)
         // Create new recipe object
         state.recipe = new Recipe(id);
 
-        // TESTING
-        window.r = state.recipe;
-
         try {
-            // Get recipedata
+            // Get recipedata and parse ingredients
             await state.recipe.getRecipe();
+            state.recipe.parceIngredients();
 
             // Calculate servings and time
             state.recipe.calcTime();
             state.recipe.calcServings();
 
             // Render recipe
-            console.log(state.recipe)
+            clearLoader();
+            recipeView.renderRecipe(state.recipe);
         } catch (err) {
             console.log(err);
             alert('Error procesing recipe!');
