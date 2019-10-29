@@ -3,6 +3,7 @@
 
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import List from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import {
@@ -10,6 +11,10 @@ import {
     renderLoader,
     clearLoader
 } from './views/base';
+
+// import {
+//     stat
+// } from 'fs';
 
 /*
         Global state of the app
@@ -82,6 +87,10 @@ const controlRecipe = async () => {
         // Prepare UI for changes
         recipeView.clearRecipe();
         renderLoader(elements.recipe)
+
+        //Higlight selected recipe
+        if (state.search) searchView.higlightSelected(id);
+
         // Create new recipe object
         state.recipe = new Recipe(id);
 
@@ -111,3 +120,22 @@ const controlRecipe = async () => {
 // window.addEventListener('load', controlRecipe);
 
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+// Handling recipe button clicks
+
+elements.recipe.addEventListener('click', e => {
+    if (e.target.matches('.btn-decrease, .btn-decrease *')) {
+        // Decrease btn is clicked
+        if (state.recipe.servings > 1) {
+            state.recipe.updateServings('dec');
+            recipeView.updatServingsIngredient(state.recipe)
+        }
+    } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+        // Increase btn is clicked
+        state.recipe.updateServings('inc')
+        recipeView.updatServingsIngredient(state.recipe)
+    }
+    console.log(state.recipe)
+});
+
+// window.l = new List;
