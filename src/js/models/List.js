@@ -15,7 +15,7 @@ export default class List {
         return item;
     }
     deleteItem(id) {
-        const index = this.items.indexOf(el => el.id === id)
+        const index = this.items.findIndex(el => el.id === id)
         //splice [2, 3, 4, 5].splice(1, 1 [num of elem]) ==> return 3 and mutate original arrey yo [2, 4, 5]
         //slice [2, 3, 4, 5].splice(1, 2 [position]) ==> return 3 and leve same original arrey yo [2, 3, 4, 5]
         this.items.splice(index, 1);
